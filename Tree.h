@@ -4,8 +4,6 @@
 
 #include "Node.h"
 
-
-
 class Tree {
 	Node *root;
 
@@ -33,7 +31,7 @@ class Tree {
 			return NULL;
 		}
 
-		Node *node = new Node(words[start]);
+		Node *node = new Node(words[start], start + 1);
 		for (int i = 0; i < node->get_child_count(); i++)
 		{
 			start++;
@@ -46,7 +44,15 @@ public:
 		int index = 0;
 		std::vector<std::string> words= split_formula(formula);
 		root = create_tree(words, index);
-		root->fix();
+		root->fix_children();
+	}
+
+	void print_errors() {
+		std::vector<std::pair<std::string, int> > errors = root->get_errors();
+		for (int i = 0; i < errors.size(); i++)
+		{
+			std::cout << "Error in word number " << errors[i].second << ". " << errors[i].first << '\n';
+		}
 	}
 
 	void print() {

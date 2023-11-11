@@ -8,6 +8,7 @@ int main() {
 
     Tree tree;
     tree.create(formula);
+    tree.print_errors();
     tree.print();
     return 0;
 }
