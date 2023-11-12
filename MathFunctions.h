@@ -1,14 +1,16 @@
+#pragma once
+
 #include <iostream>
 
-int TOTAL_OPERATIONS = 6;
+const int TOTAL_OPERATIONS = 6;
 
 enum FunctionType {
-    add,
-    sub,
-    mul,
-    div,
-    sin,
-    cos
+    add_fun,
+    sub_fun,
+    mul_fun,
+    div_fun,
+    sin_fun,
+    cos_fun
 };
 
 struct MathFuction {
@@ -25,10 +27,10 @@ struct MathFuction {
 };
 
 const MathFuction MATH_FUNCTION_LIST[] = {
-    MathFuction("+", add, 2, "0"),
-    MathFuction("-", sub, 2, "0"),
-    MathFuction("*", mul, 2, "1"),
-    MathFuction("/", div, 2, "1"),
-    MathFuction("sin", sin, 1, "0"),
-    MathFuction("cos", cos, 1, "22 / 7"),
+    MathFuction("+", add_fun, 2, "0"),
+    MathFuction("-", sub_fun, 2, "0"),
+    MathFuction("*", mul_fun, 2, "1"),
+    MathFuction("/", div_fun, 2, "1"),
+    MathFuction("sin", sin_fun, 1, "0"),
+    MathFuction("cos", cos_fun, 1, "22 / 7"),
 };

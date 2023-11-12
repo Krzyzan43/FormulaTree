@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -31,7 +33,7 @@ class Tree {
 			return NULL;
 		}
 
-		Node *node = new Node(words[start], start + 1);
+		Node *node = Node::create(words[start], start + 1);
 		for (int i = 0; i < node->get_child_count(); i++)
 		{
 			start++;
@@ -44,7 +46,7 @@ public:
 		int index = 0;
 		std::vector<std::string> words= split_formula(formula);
 		root = create_tree(words, index);
-		root->fix_children();
+		root->fix();
 	}
 
 	void print_errors() {

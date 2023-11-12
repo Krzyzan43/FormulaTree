@@ -3,6 +3,9 @@ project(formula_tree VERSION 0.1.0)
 set (CMAKE_CXX_STANDARD 98)
 
 add_executable(formula_tree
-    main.cpp    
+    main.cpp
+    Node.cpp
+    Node.h
+    Tree.h
 )
 
