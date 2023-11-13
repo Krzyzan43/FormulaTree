@@ -33,6 +33,10 @@ public:
     std::set<std::string> get_variables();
 
     virtual float evaluate(std::map<std::string, int> &values) = 0;
+
+    void replace_rightmost(Node *replacement);
+
+    Node *get_rightmost();
 protected:
     int childCount;
     std::string symbol;

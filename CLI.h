@@ -119,7 +119,23 @@ private:
     }
 
     void handle_join(std::string args) {
-        println("Unimplemented");
+        if(args == "") {
+            println("Missing argument");
+            return;
+        }
+
+        Tree *joined_tree = new Tree();
+        joined_tree->create(args);
+        std::vector<std::string> errors = joined_tree->get_errors();
+        if(errors.size() != 0) {
+            println("There have been errors.");
+            for (int i = 0; i < errors.size(); i++)
+                println(errors[i]);
+        }
+
+        tree->joinWith(joined_tree);
+        println("Current tree: ");
+        println(tree->to_string());
     }
 
     void print(std::string str) {

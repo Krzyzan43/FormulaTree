@@ -71,6 +71,12 @@ public:
 		return root->evaluate(map);
 	}
 
+	void joinWith(Tree *tree) {
+		root->replace_rightmost(tree->root);
+		tree->root = 0;
+		delete tree;
+	}
+
 	std::string to_string() {
 		return root->to_string();
 	}

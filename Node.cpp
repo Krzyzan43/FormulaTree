@@ -135,7 +135,27 @@ float FunctionNode::evaluate(std::map<std::string, int> &values) {
     return res;
 }
 
+Node *Node::get_rightmost() {
+    if(childCount == 0)
+        return 0;
+    else
+        return children[childCount - 1];
+}
 
+void Node::replace_rightmost(Node *node) {
+    Node *replacement = this;
+    Node *next = get_rightmost();
+    if(next == 0)
+        return;
+
+    while (next->get_rightmost() != 0){
+        replacement = next;
+        next = next->get_rightmost();
+    }
+
+    delete next;
+    replacement->children[childCount - 1] = node;
+}
 
 // Variable Node ---------------------------------------------------
 VariableNode::VariableNode(const std::string &v, int id) :Node(v, id) {
