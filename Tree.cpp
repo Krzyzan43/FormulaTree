@@ -1,4 +1,7 @@
+#include <sstream>
+
 #include "Tree.h"
+#include "Utils.h"
 
 Node *Tree::create_tree(const std::vector<std::string> &words, int &start) {
     if(start >= words.size()) {

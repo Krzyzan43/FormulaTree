@@ -1,12 +1,9 @@
 #pragma once
 
-#include <iostream>
 #include <vector>
 #include <string>
-#include <sstream>
 
 #include "Node.h"
-#include "Utils.h"
 
 const std::string WORD_ERROR = "Error in word number ";
 

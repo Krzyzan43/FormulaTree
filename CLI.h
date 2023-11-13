@@ -1,7 +1,4 @@
-#include <iostream>
-
 #include "Tree.h"
-#include "Utils.h"
 
 const std::string UNSUPPORTED_OPERATION = "Unsupported operation";
 const std::string INVALID_ARGUMENT = "Invalid argument";
@@ -14,7 +11,7 @@ const std::string   ENTER_COMMAND = "enter",
                     COMP_COMMAND = "comp",
                     PRINT_COMMAND = "print",
                     JOIN_COMMAND = "join";
-                    
+
 class CLI {
 
 public:

@@ -1,3 +1,6 @@
+#include <math.h>
+#include <string>
+
 #include "Node.h"
 
 Node *Node::create(const std::string &symbol, int id) {

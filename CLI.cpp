@@ -1,4 +1,7 @@
+#include <iostream>
+
 #include "CLI.h"
+#include "Utils.h"
 
 
 CLI::CLI() :tree(0) {}

@@ -1,9 +1,7 @@
 #pragma once
 
-#include <iostream>
 #include <vector>
 #include <map>
-#include <math.h>
 #include <set>
 
 #include "MathFunctions.h"

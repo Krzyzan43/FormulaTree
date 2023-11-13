@@ -1,7 +1,5 @@
 #pragma once
 
-#include <iostream>
-
 const int TOTAL_OPERATIONS = 6;
 
 enum FunctionType {
