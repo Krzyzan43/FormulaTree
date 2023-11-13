@@ -129,7 +129,7 @@ void CLI::handle_join(const std::string &args) {
             println(errors[i]);
     }
 
-    tree->joinWith(joined_tree);
+    tree->join_with(joined_tree);
     println(CURRENT_TREE);
     println(tree->to_string());
 }

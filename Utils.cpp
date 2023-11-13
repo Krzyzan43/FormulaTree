@@ -4,8 +4,7 @@
 
 
 std::vector<std::string> split_string(const std::string &string, int splits, char seperator) {
-	
-    std::string current_word = "";
+	std::string current_word = "";
     std::vector<std::string> result;
 
     int last = 0, current = 0;

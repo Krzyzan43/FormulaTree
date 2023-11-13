@@ -17,7 +17,7 @@ public:
 
 	float evaluate(const std::vector<int> &values) const;
 
-	void joinWith(Tree *tree);
+	void join_with(Tree *tree);
 
 	std::string to_string() const;
 private:

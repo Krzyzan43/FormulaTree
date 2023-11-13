@@ -17,7 +17,7 @@ public:
 
     Node(const std::string &symbol, int id);
 
-    void setChild(int i, Node *child);
+    void set_child(int i, Node *child);
 
     int get_child_count() const;
 
@@ -42,7 +42,7 @@ public:
     ~Node();
 
 protected:
-    int childCount;
+    int child_count;
     std::string symbol;
     Node** children;
     std::string error;
@@ -52,9 +52,9 @@ protected:
 
     virtual void collect_variables(std::set<std::string> &variables) const;
 
-    static bool isNumber(char c);
+    static bool is_digit(char c);
 
-    static bool isLetter(char c);
+    static bool is_letter(char c);
 };
 
 

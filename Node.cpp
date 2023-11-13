@@ -30,17 +30,17 @@ Node::Node(const std::string &symbol, int id)
     id(id),
     error("") {};
 
-void Node::setChild(int i, Node *child) {
+void Node::set_child(int i, Node *child) {
     children[i] = child;
 }
 
 int Node::get_child_count() const {
-    return childCount;
+    return child_count;
 }
 
 std::string Node::to_string() const {
     std::string res = symbol;
-    for (int i = 0; i < childCount; i++)
+    for (int i = 0; i < child_count; i++)
         res += " " + children[i]->to_string();
     return res;
 }
@@ -64,26 +64,26 @@ std::set<std::string> Node::get_variables() const {
 void Node::collect_errors(std::vector<std::pair<std::string, int> > &errors) const {
     if(error != "")
         errors.push_back(std::pair<std::string, int>(error, id));
-    for (int i = 0; i < childCount; i++)
+    for (int i = 0; i < child_count; i++)
     {
-        if(children[i] != NULL)
+        if(children[i] != 0)
             children[i]->collect_errors(errors);
     } 
 }
 
 void Node::collect_variables(std::set<std::string> &variables) const {
-    for (int i = 0; i < childCount; i++)
+    for (int i = 0; i < child_count; i++)
     {
-        if(children[i] != NULL)
+        if(children[i] != 0)
             children[i]->collect_variables(variables);
     }
 }
 
-bool Node::isNumber(char c) {
+bool Node::is_digit(char c) {
     return '0' <= c && c <= '9';
 }
 
-bool Node::isLetter(char c) {
+bool Node::is_letter(char c) {
     return 'a' <= c && c <= 'z' || 'A' <= c && c <= 'Z';
 }
 
@@ -93,14 +93,14 @@ bool Node::isLetter(char c) {
 FunctionNode::FunctionNode(const MathFuction &f, int id) 
 :Node(f.symbol, id),
 f(f) {
-    childCount = f.argument_n;
-    children = new Node*[childCount];
+    child_count = f.argument_n;
+    children = new Node*[child_count];
 };
 
 void FunctionNode::fix()  {
-    for (int i = 0; i < childCount; i++)
+    for (int i = 0; i < child_count; i++)
     {
-        if(children[i] == NULL) {
+        if(children[i] == 0) {
             children[i] = Node::create(f.fix_string);
             error = FUNCTION_ERROR;
         }
@@ -110,8 +110,8 @@ void FunctionNode::fix()  {
 
 float FunctionNode::evaluate(std::map<std::string, int> &values) const {
     float res = 0;
-    float *c_res = new float[childCount];
-    for (int i = 0; i < childCount; i++)
+    float *c_res = new float[child_count];
+    for (int i = 0; i < child_count; i++)
         c_res[i] = children[i]->evaluate(values);
     
     switch (f.type)
@@ -139,17 +139,17 @@ float FunctionNode::evaluate(std::map<std::string, int> &values) const {
 }
 
 Node *Node::get_rightmost() {
-    if(childCount == 0)
+    if(child_count == 0)
         return 0;
     else
-        return children[childCount - 1];
+        return children[child_count - 1];
 }
 
 const Node *Node::get_rightmost() const {
-    if(childCount == 0)
+    if(child_count == 0)
         return 0;
     else
-        return children[childCount - 1];
+        return children[child_count - 1];
 }
 
 void Node::replace_rightmost(Node *node) {
@@ -164,12 +164,12 @@ void Node::replace_rightmost(Node *node) {
     }
 
     delete next;
-    replacement->children[childCount - 1] = node;
+    replacement->children[child_count - 1] = node;
 }
 
 Node::~Node()
 {
-    for (int i = 0; i < childCount; i++)
+    for (int i = 0; i < child_count; i++)
     {
         delete children[i];
     }
@@ -180,14 +180,14 @@ Node::~Node()
 
 // Variable Node ---------------------------------------------------
 VariableNode::VariableNode(const std::string &v, int id) :Node(v, id) {
-    childCount = 0;
+    child_count = 0;
 };
 
 void VariableNode::fix()  {
     std::string result = "";
     for (int i = 0; i < symbol.length(); i++)
     {
-        if(isNumber(symbol.at(i)) || isLetter(symbol.at(i)))
+        if(is_digit(symbol.at(i)) || is_letter(symbol.at(i)))
             result += symbol.at(i);
     }
     if(result != symbol)
@@ -208,14 +208,14 @@ void VariableNode::collect_variables(std::set<std::string> &variables) const {
 
 // Const Node -------------------------------------------------------
 ConstNode::ConstNode(const std::string &c, int id) :Node(c, id) {
-    childCount = 0;
+    child_count = 0;
 };
 
 void ConstNode::fix()  {
     std::string result = "";
     for (int i = 0; i < symbol.length(); i++)
     {
-        if(isNumber(symbol.at(i)))
+        if(is_digit(symbol.at(i)))
             result += symbol.at(i);
     }
     if(result == "")

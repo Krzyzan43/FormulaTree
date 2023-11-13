@@ -5,14 +5,14 @@
 
 Node *Tree::create_tree(const std::vector<std::string> &words, int &start) {
     if(start >= words.size()) {
-        return NULL;
+        return 0;
     }
 
     Node *node = Node::create(words[start], start + 1);
     for (int i = 0; i < node->get_child_count(); i++)
     {
         start++;
-        node->setChild(i, create_tree(words, start));
+        node->set_child(i, create_tree(words, start));
     }
     return node;
 }
@@ -62,7 +62,7 @@ float Tree::evaluate(const std::vector<int> &values) const {
     return root->evaluate(map);
 }
 
-void Tree::joinWith(Tree *tree) {
+void Tree::join_with(Tree *tree) {
     root->replace_rightmost(tree->root);
     tree->root = 0;
     delete tree;
