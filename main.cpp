@@ -1,14 +1,9 @@
 #include <iostream>
 #include "Tree.h"
+#include "CLI.h"
 
 int main() {
-    std::cout << "Enter formula: ";
-    std::string formula;
-    std::getline(std::cin, formula);
-
-    Tree tree;
-    tree.create(formula);
-    tree.print_errors();
-    tree.print();
+    CLI cli;
+    cli.start();
     return 0;
 }

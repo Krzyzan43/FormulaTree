@@ -3,30 +3,14 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <sstream>
 
 #include "Node.h"
+#include "Utils.h"
 
 class Tree {
 	Node *root;
 
-	std::vector<std::string> split_formula(std::string formula) {
-		
-		std::string current_symbol = "";
-		std::vector<std::string> result;
-		for (int i = 0; i < formula.length(); i++)
-		{
-			char c = formula.at(i);
-			if(c != ' ')
-				current_symbol += c;
-			else if(current_symbol != "") {
-				result.push_back(current_symbol);
-				current_symbol = "";
-			}
-		}
-		if(current_symbol != "")
-			result.push_back(current_symbol);
-		return result;
-	}
 
 	Node *create_tree(std::vector<std::string> words, int &start) {
 		if(start >= words.size()) {
@@ -44,20 +28,50 @@ class Tree {
 public:
 	void create(std::string formula){
 		int index = 0;
-		std::vector<std::string> words= split_formula(formula);
+		std::vector<std::string> words = split_string(formula);
 		root = create_tree(words, index);
 		root->fix();
 	}
 
-	void print_errors() {
+	std::vector<std::string> get_errors() {
 		std::vector<std::pair<std::string, int> > errors = root->get_errors();
+		std::vector<std::string> str_errors(errors.size());
+
 		for (int i = 0; i < errors.size(); i++)
 		{
-			std::cout << "Error in word number " << errors[i].second << ". " << errors[i].first << '\n';
+			std::ostringstream ss;
+			ss << errors[i].second;
+			std::string word_n = ss.str();
+			std::string message = errors[i].first;
+			std::string err = "Error in word number " + word_n + ". " + message;
+			str_errors.push_back(err);
 		}
+
+		return str_errors;
 	}
 
-	void print() {
-		root->print();
+	std::set<std::string> get_vars() {
+		return root->get_variables();
+	}
+
+	float evaluate(std::vector<int> values) {
+		std::set<std::string> vars = get_vars();
+		if(vars.size() != values.size())
+			throw std::logic_error("Invalid values");
+
+		std::map<std::string, int> map;
+		std::set<std::string>::iterator it;
+		it = vars.begin();
+		for (int  i = 0; i < values.size(); i++)
+		{
+			map[*it] = values[i];
+			it++;
+		}
+		
+		return root->evaluate(map);
+	}
+
+	std::string to_string() {
+		return root->to_string();
 	}
 };

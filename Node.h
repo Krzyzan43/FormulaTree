@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include <math.h>
+#include <set>
 
 #include "MathFunctions.h"
 
@@ -21,7 +22,7 @@ public:
 
     int get_child_count();
 
-    void print();
+    std::string to_string();
 
     virtual void fix() = 0;
 
@@ -29,7 +30,7 @@ public:
 
     std::vector<std::pair<std::string, int> > get_errors();
 
-    std::vector<std::string> get_variables();
+    std::set<std::string> get_variables();
 
     virtual float evaluate(std::map<std::string, int> &values) = 0;
 protected:
@@ -41,7 +42,7 @@ protected:
 
     void collect_errors(std::vector<std::pair<std::string, int> > &errors);
 
-    virtual void collect_variables(std::vector <std::string> &variables);
+    virtual void collect_variables(std::set<std::string> &variables);
 
     static bool isNumber(char c);
 
@@ -67,7 +68,7 @@ public:
 
     float evaluate(std::map<std::string, int> &values);
 protected:
-    void collect_variables(std::vector<std::string> &variables);
+    void collect_variables(std::set<std::string> &variables);
 };
 
 class ConstNode :public Node {

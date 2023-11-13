@@ -35,10 +35,11 @@ int Node::get_child_count() {
     return childCount;
 }
 
-void Node::print() {
-    std::cout << symbol << " ";
+std::string Node::to_string() {
+    std::string res = symbol;
     for (int i = 0; i < childCount; i++)
-        children[i]->print();
+        res += " " + children[i]->to_string();
+    return res;
 }
 
 std::string Node::get_error() {
@@ -51,8 +52,8 @@ std::vector<std::pair<std::string, int> > Node::get_errors() {
     return errors;
 }
 
-std::vector<std::string> Node::get_variables() {
-    std::vector<std::string> variables;
+std::set<std::string> Node::get_variables() {
+    std::set<std::string> variables;
     collect_variables(variables);
     return variables;
 }
@@ -67,7 +68,7 @@ void Node::collect_errors(std::vector<std::pair<std::string, int> > &errors) {
     } 
 }
 
-void Node::collect_variables(std::vector <std::string> &variables) {
+void Node::collect_variables(std::set<std::string> &variables) {
     for (int i = 0; i < childCount; i++)
     {
         if(children[i] != NULL)
@@ -105,7 +106,33 @@ void FunctionNode::fix()  {
 }
 
 float FunctionNode::evaluate(std::map<std::string, int> &values) {
-    throw std::logic_error("Not implemented");
+    float res = 0;
+    float *c_res = new float[childCount];
+    for (int i = 0; i < childCount; i++)
+        c_res[i] = children[i]->evaluate(values);
+    
+    switch (f.type)
+    {
+        case add_fun:
+            res = c_res[0] + c_res[1];
+            break;
+        case sub_fun:
+            res = c_res[0] - c_res[1];
+            break;
+        case mul_fun:
+            res = c_res[0] * c_res[1];
+            break;
+        case div_fun:
+            res = c_res[0] / c_res[1];
+            break;
+        case sin_fun:
+            res = sin(c_res[0]);
+            break;
+        case cos_fun:
+            res = cos(c_res[0]);
+    }
+    delete[] c_res;
+    return res;
 }
 
 
@@ -128,10 +155,11 @@ void VariableNode::fix()  {
 }
 
 float VariableNode::evaluate(std::map<std::string, int> &values)  {
-    throw std::logic_error("Not implemented");
+    return values[symbol];
 }
-void VariableNode::collect_variables(std::vector<std::string> &variables)  {
-    variables.push_back(symbol);
+
+void VariableNode::collect_variables(std::set<std::string> &variables)  {
+    variables.insert(symbol);
     Node::collect_variables(variables);
 }
 
@@ -159,10 +187,15 @@ void ConstNode::fix()  {
 }
 
 float ConstNode::evaluate(std::map<std::string, int> &_)  {
-    throw std::logic_error("Not implemented");
+    return value;
 }
 
 int ConstNode::to_int(std::string str) {
     int result = 0;
-    return 5;
+    for (int i = 0; i < str.length(); i++)
+    {
+        int exponent = str.length() - i - 1;
+        result += (str.at(i) - '0') * pow(10, exponent);
+    }
+    return result;
 }

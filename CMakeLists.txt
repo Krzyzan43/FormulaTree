@@ -7,5 +7,7 @@ add_executable(formula_tree
     Node.cpp
     Node.h
     Tree.h
+    Utils.h
+    Utils.cpp
 )
 
