@@ -11,6 +11,10 @@ enum FunctionType {
     cos_fun
 };
 
+// Represents single math operation, for example multiplication.
+// Specifies how many arguments it has, its string symbol
+// and what to put for a replacement if user hasn't specified
+// all arguments
 struct MathFuction {
     const std::string symbol;
     const int argument_n;

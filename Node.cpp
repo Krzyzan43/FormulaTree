@@ -87,6 +87,44 @@ bool Node::is_letter(char c) {
     return 'a' <= c && c <= 'z' || 'A' <= c && c <= 'Z';
 }
 
+Node *Node::get_rightmost() {
+    if(child_count == 0)
+        return 0;
+    else
+        return children[child_count - 1];
+}
+
+const Node *Node::get_rightmost() const {
+    if(child_count == 0)
+        return 0;
+    else
+        return children[child_count - 1];
+}
+
+void Node::replace_rightmost(Node *node) {
+    Node *replacement = this;
+    Node *next = get_rightmost();
+    if(next == 0)
+        return;
+
+    while (next->get_rightmost() != 0){
+        replacement = next;
+        next = next->get_rightmost();
+    }
+
+    delete next;
+    replacement->children[child_count - 1] = node;
+}
+
+Node::~Node()
+{
+    for (int i = 0; i < child_count; i++)
+    {
+        delete children[i];
+    }
+    delete[] children;
+}
+
 
 
 // Function/operator Node -----------------------------------------
@@ -97,6 +135,9 @@ f(f) {
     children = new Node*[child_count];
 };
 
+// Checks if mathematical function/operation has all necessary arguments
+// If not, creates a default argument. For example expression "+ 2 * 3"
+// turns into "+ 2 * 3 1"
 void FunctionNode::fix()  {
     for (int i = 0; i < child_count; i++)
     {
@@ -138,44 +179,6 @@ float FunctionNode::evaluate(std::map<std::string, int> &values) const {
     return res;
 }
 
-Node *Node::get_rightmost() {
-    if(child_count == 0)
-        return 0;
-    else
-        return children[child_count - 1];
-}
-
-const Node *Node::get_rightmost() const {
-    if(child_count == 0)
-        return 0;
-    else
-        return children[child_count - 1];
-}
-
-void Node::replace_rightmost(Node *node) {
-    Node *replacement = this;
-    Node *next = get_rightmost();
-    if(next == 0)
-        return;
-
-    while (next->get_rightmost() != 0){
-        replacement = next;
-        next = next->get_rightmost();
-    }
-
-    delete next;
-    replacement->children[child_count - 1] = node;
-}
-
-Node::~Node()
-{
-    for (int i = 0; i < child_count; i++)
-    {
-        delete children[i];
-    }
-    delete[] children;
-}
-
 
 
 // Variable Node ---------------------------------------------------
@@ -183,6 +186,7 @@ VariableNode::VariableNode(const std::string &v, int id) :Node(v, id) {
     child_count = 0;
 };
 
+// Removes all characters that are not letter or number from the symbol
 void VariableNode::fix()  {
     std::string result = "";
     for (int i = 0; i < symbol.length(); i++)
@@ -211,6 +215,9 @@ ConstNode::ConstNode(const std::string &c, int id) :Node(c, id) {
     child_count = 0;
 };
 
+// Removes all characters that aren't a digit from the symbol
+// If no characters are left, then it assigns 0
+// Converts symbol to int
 void ConstNode::fix()  {
     std::string result = "";
     for (int i = 0; i < symbol.length(); i++)

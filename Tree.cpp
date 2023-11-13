@@ -71,3 +71,8 @@ void Tree::join_with(Tree *tree) {
 std::string Tree::to_string() const {
     return root->to_string();
 }
+
+Tree::~Tree()
+{
+    delete root;
+}

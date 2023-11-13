@@ -141,3 +141,7 @@ void CLI::print(const std::string &str) {
 void CLI::println(const std::string &str) {
     std::cout << str << std::endl;
 }
+
+CLI::~CLI() {
+    delete tree;
+}
