@@ -3,7 +3,7 @@
 #include "Utils.h"
 
 
-std::vector<std::string> split_string(std::string string, int splits, char seperator) {
+std::vector<std::string> split_string(const std::string &string, int splits, char seperator) {
 	
     std::string current_word = "";
     std::vector<std::string> result;
@@ -22,7 +22,7 @@ std::vector<std::string> split_string(std::string string, int splits, char seper
     return result;
 }
 
-int to_int(std::string str, bool &success)
+int to_int(const std::string &str, bool &success)
 {
     for (int i = 0; i < str.size(); i++)
     {

@@ -1,6 +1,6 @@
 #include "Node.h"
 
-Node *Node::create(std::string symbol, int id) {
+Node *Node::create(const std::string &symbol, int id) {
     // Check if its an operator or a function
     for (int i = 0; i < TOTAL_OPERATIONS; i++)
     {
@@ -22,7 +22,7 @@ Node *Node::create(std::string symbol, int id) {
     return new ConstNode(symbol, id);
 }
 
-Node::Node(std::string symbol, int id)
+Node::Node(const std::string &symbol, int id)
     :symbol(symbol),
     id(id),
     error("") {};
@@ -31,34 +31,34 @@ void Node::setChild(int i, Node *child) {
     children[i] = child;
 }
 
-int Node::get_child_count() {
+int Node::get_child_count() const {
     return childCount;
 }
 
-std::string Node::to_string() {
+std::string Node::to_string() const {
     std::string res = symbol;
     for (int i = 0; i < childCount; i++)
         res += " " + children[i]->to_string();
     return res;
 }
 
-std::string Node::get_error() {
+std::string Node::get_error() const {
     return error;
 }
 
-std::vector<std::pair<std::string, int> > Node::get_errors() {
+std::vector<std::pair<std::string, int> > Node::get_errors() const {
     std::vector<std::pair<std::string, int> > errors;
     collect_errors(errors);
     return errors;
 }
 
-std::set<std::string> Node::get_variables() {
+std::set<std::string> Node::get_variables() const {
     std::set<std::string> variables;
     collect_variables(variables);
     return variables;
 }
 
-void Node::collect_errors(std::vector<std::pair<std::string, int> > &errors) {
+void Node::collect_errors(std::vector<std::pair<std::string, int> > &errors) const {
     if(error != "")
         errors.push_back(std::pair<std::string, int>(error, id));
     for (int i = 0; i < childCount; i++)
@@ -68,7 +68,7 @@ void Node::collect_errors(std::vector<std::pair<std::string, int> > &errors) {
     } 
 }
 
-void Node::collect_variables(std::set<std::string> &variables) {
+void Node::collect_variables(std::set<std::string> &variables) const {
     for (int i = 0; i < childCount; i++)
     {
         if(children[i] != NULL)
@@ -105,7 +105,7 @@ void FunctionNode::fix()  {
     }
 }
 
-float FunctionNode::evaluate(std::map<std::string, int> &values) {
+float FunctionNode::evaluate(std::map<std::string, int> &values) const {
     float res = 0;
     float *c_res = new float[childCount];
     for (int i = 0; i < childCount; i++)
@@ -142,6 +142,13 @@ Node *Node::get_rightmost() {
         return children[childCount - 1];
 }
 
+const Node *Node::get_rightmost() const {
+    if(childCount == 0)
+        return 0;
+    else
+        return children[childCount - 1];
+}
+
 void Node::replace_rightmost(Node *node) {
     Node *replacement = this;
     Node *next = get_rightmost();
@@ -156,6 +163,17 @@ void Node::replace_rightmost(Node *node) {
     delete next;
     replacement->children[childCount - 1] = node;
 }
+
+Node::~Node()
+{
+    for (int i = 0; i < childCount; i++)
+    {
+        delete children[i];
+    }
+    delete[] children;
+}
+
+
 
 // Variable Node ---------------------------------------------------
 VariableNode::VariableNode(const std::string &v, int id) :Node(v, id) {
@@ -174,11 +192,11 @@ void VariableNode::fix()  {
     symbol = result;
 }
 
-float VariableNode::evaluate(std::map<std::string, int> &values)  {
+float VariableNode::evaluate(std::map<std::string, int> &values) const {
     return values[symbol];
 }
 
-void VariableNode::collect_variables(std::set<std::string> &variables)  {
+void VariableNode::collect_variables(std::set<std::string> &variables) const {
     variables.insert(symbol);
     Node::collect_variables(variables);
 }
@@ -206,7 +224,7 @@ void ConstNode::fix()  {
     value = to_int(symbol);
 }
 
-float ConstNode::evaluate(std::map<std::string, int> &_)  {
+float ConstNode::evaluate(std::map<std::string, int> &_) const {
     return value;
 }
 

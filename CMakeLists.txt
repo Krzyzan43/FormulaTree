@@ -9,5 +9,8 @@ add_executable(formula_tree
     Tree.h
     Utils.h
     Utils.cpp
+    CLI.cpp
+    CLI.h
+    Tree.cpp
 )
 
