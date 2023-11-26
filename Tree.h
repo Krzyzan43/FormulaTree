@@ -35,6 +35,8 @@ public:
 
 	// Returns formula in reverse notation
 	std::string to_string() const;
+
+	~Tree();
 private:
 	Node *root;
 

@@ -53,11 +53,8 @@ float Tree::evaluate(const std::vector<int> &values) const {
     std::map<std::string, int> map;
     std::set<std::string>::iterator it;
     it = vars.begin();
-    for (int  i = 0; i < values.size(); i++)
-    {
+    for (int i = 0; i < values.size(); i++, it++)
         map[*it] = values[i];
-        it++;
-    }
 		
     return root->evaluate(map);
 }
